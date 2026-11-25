@@ -6,7 +6,6 @@ An interactive **Power BI dashboard** designed to explore PhonePe transaction pe
 
 ![PhonePe Power BI Dashboard](dashboard-preview.png)
 
-> Add your dashboard screenshot to the repository and name it `dashboard-preview.png`, or update the image path above to match your uploaded image's filename.
 
 ## Project Overview
 
@@ -65,5 +64,6 @@ This project demonstrates dashboard design and analytical storytelling using tra
 ## Author
 
 **Avinash Pawar**
+Linkedin: ##
 
 If you find this project useful, feel free to star the repository.
