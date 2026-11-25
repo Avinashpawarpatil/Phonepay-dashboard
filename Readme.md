@@ -38,6 +38,7 @@ The figures shown in the dashboard screenshot are illustrative of the report vie
 - Microsoft Power BI
 - Power Query (for data preparation, if used in the project)
 - DAX (for measures and KPI calculations, if used in the project)
+- GitHub for version control and project sharing
 
 ## Repository Contents
 
@@ -45,17 +46,31 @@ Suggested repository structure:
 
 ```text
 PhonePe-Analysis/
-├── Phonepe_Analysis.pbix       # Power BI report file
-├── dashboard-preview.png       # Dashboard screenshot
-└── README.md                   # Project documentation
+│
+├── Phonepe_Analysis.pbip
+│
+├── Phonepe_Analysis.Report/
+│   ├── definition/
+│   └── ...
+│
+├── Phonepe_Analysis.SemanticModel/
+│   ├── definition/
+│   └── ...
+│
+├── dashboard-preview.png
+│
+└── README.md                 # Project documentation
 ```
 
 ## How to View the Dashboard
 
-1. Download or clone this repository.
-2. Open the `.pbix` file using **Microsoft Power BI Desktop**.
-3. Refresh the data if the source files are available and required.
-4. Use the Month and Payment Status filters to explore the report.
+1.Download or clone this repository.
+2.Extract the downloaded ZIP file, if applicable.
+3.Locate the .pbip project file.
+4.Open the .pbip file using Microsoft Power BI Desktop.
+5.If prompted, configure the data source or update the file paths.
+6.Refresh the data if the source files are available.
+7.Explore the dashboard using the interactive filters.
 
 ## Purpose
 
@@ -64,6 +79,6 @@ This project demonstrates dashboard design and analytical storytelling using tra
 ## Author
 
 **Avinash Pawar**
-Linkedin: ##
+Linkedin: https://www.linkedin.com/in/avinash-pawar-198657257/
 
-If you find this project useful, feel free to star the repository.
+If you find this project useful, feel free to ⭐ star the repository.
