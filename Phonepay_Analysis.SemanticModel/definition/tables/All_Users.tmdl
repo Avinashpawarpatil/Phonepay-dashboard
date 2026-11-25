@@ -1,0 +1,70 @@
+table All_Users
+	lineageTag: 14169968-daa7-426e-a9f3-4b512cbdba8e
+
+	column User_ID
+		dataType: string
+		lineageTag: b9c5eb64-04ca-4d8a-b81f-71cf6d98b3d3
+		summarizeBy: none
+		sourceColumn: User_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: 3e5daa1e-e71c-4d74-85d0-c35e5c6ffe7a
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: dee9d8b0-492f-4c5f-b876-d2c05c40f322
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Join_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4ad58aab-cdcd-44ab-91ea-3ac4979ece8b
+		summarizeBy: none
+		sourceColumn: Join_Date
+
+		variation Variation
+			isDefault
+			relationship: fd011725-ca23-47cf-8f03-cfc119c2aaae
+			defaultHierarchy: LocalDateTable_36d37399-0056-4322-a1b2-6384c4ea14cc.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Age Segment'
+		dataType: string
+		lineageTag: f53da9e2-2aa3-490f-940e-bd3eb2cffafd
+		summarizeBy: none
+		sourceColumn: Age Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition All_Users = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Data Analytics\Phonepe-Final-Dataset.xlsx"), null, true),
+				    All_Users_Sheet = Source{[Item="All_Users",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(All_Users_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"User_ID", type text}, {"Name", type text}, {"Age", Int64.Type}, {"Join_Date", type date}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Changed Type", {"User_ID"}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Removed Duplicates", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Added Conditional Column" = Table.AddColumn(#"Removed Blank Rows", "Age Segment", each if [Age] <= 26 then "Gen Z" else if [Age] <= 42 then "Millenials" else if [Age] <= 58 then "Gen x" else "Boomers")
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

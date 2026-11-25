@@ -1,0 +1,91 @@
+table Date_Table
+	lineageTag: 13e2aecc-9998-4869-a864-4e47ebbff9e9
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 327cfd51-51c3-4182-82f8-06d37a8bf39b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: ed1ac9b6-5577-4664-8754-716a2f83ad08
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month No.'
+		formatString: 0
+		lineageTag: 7ddbb56d-f030-4416-874d-2a37169fb810
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month No.]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: a711512a-235d-4cdd-8308-ebd9b315fd7f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+		sortByColumn: 'Month No.'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quater
+		lineageTag: 1ddd2e63-a7df-4e9f-8112-66e00da94f9d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quater]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekday
+		lineageTag: 34d3c622-a72f-416d-98ee-9ba851d3dac7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekday]
+		sortByColumn: 'Day No.'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day No.'
+		formatString: 0
+		lineageTag: a621b859-139a-4657-b678-5b00f60f2bbe
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day No.]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekend
+		lineageTag: 37564ca8-4788-40b9-89c7-d5f4f2a430be
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekend]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date_Table = calculated
+		mode: import
+		source =
+				ADDCOLUMNS(CALENDAR(MIN(All_Transactions[Date]),MAX(All_Transactions[Date])),
+				"Year",YEAR([Date]),
+				"Month No.",MONTH([Date]),
+				"Month",FORMAT([Date],"MMM"),
+				"Quater","Q"&FORMAT([Date],"Q"),
+				"Weekday",FORMAT([Date],"dddd"),
+				"Day No.", WEEKDAY([Date],2),
+				"Weekend",
+				IF(WEEKDAY([Date],2)>=6,"Weekend","Weekday")
+				)
+
+	annotation PBI_Id = c6216016ae2d4c0b85b4d0fc78090043
+

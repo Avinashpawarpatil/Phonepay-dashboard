@@ -1,0 +1,60 @@
+table 'Measures (2)'
+	lineageTag: 53181cca-5935-4aa1-9d1a-e587dc0ec775
+
+	measure 'Total Transactions Value' = SUM(All_Transactions[Amount])
+		lineageTag: b00beaf2-fac3-435a-96d4-1cc9231f5ee9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Transactions' = COUNT(All_Transactions[Transaction_ID])
+		formatString: 0
+		lineageTag: 79f9e42a-7f8e-4a41-b738-7455b93109cc
+
+	measure 'Successful Transaction' = CALCULATE([Total Transactions],All_Transactions[Payment_Status]="Successful")
+		formatString: 0
+		lineageTag: 08f3522c-077e-4275-b285-9da21751660f
+
+	measure 'Success Rate' = DIVIDE([Successful Transaction],[Total Transactions])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: fdf7d1ac-b083-48a9-9912-8bf534e74019
+
+	measure 'Total Users' = DISTINCTCOUNT(All_Users[User_ID])
+		formatString: 0
+		lineageTag: f5d2d9c7-f61f-4d9c-b4eb-5bf7996bc157
+
+	measure 'Trans Value PM' = CALCULATE([Total Transactions Value],DATEADD(Date_Table[Date],-1,MONTH))
+		lineageTag: ebe64671-d926-4122-9058-afbed9e38c30
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Trans Value MOM%' = DIVIDE([Total Transactions Value]-[Trans Value PM],[Trans Value PM],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 7737b934-b2f2-4b28-98f9-a0d6771e857c
+
+	measure 'Total Trans PM' = CALCULATE([Total Transactions],DATEADD(Date_Table[Date],-1,MONTH))
+		formatString: 0
+		lineageTag: 749a5f57-d6b2-472d-82e5-0d3a017efb47
+
+	measure 'Total Trans MOM%' = DIVIDE([Total Transactions]-[Total Trans PM],[Total Trans PM],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f44b3636-d752-4af4-b990-ce842318b031
+
+	column Calc
+		dataType: string
+		lineageTag: c99d73eb-0dee-47c7-9eb9-a04816becb65
+		summarizeBy: none
+		sourceColumn: Calc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Measures (2)' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Calc = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Calc", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

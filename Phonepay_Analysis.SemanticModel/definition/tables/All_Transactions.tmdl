@@ -1,0 +1,94 @@
+table All_Transactions
+	lineageTag: 6d94f78a-b55e-4aeb-ad64-813179317971
+
+	column Transaction_ID
+		dataType: string
+		lineageTag: 7b447b3a-baba-47d3-8685-7c7c602e5c5a
+		summarizeBy: none
+		sourceColumn: Transaction_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: double
+		lineageTag: d698c89c-7411-4774-a9f8-46126510dfe6
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column User_ID
+		dataType: string
+		lineageTag: a4436e80-5162-4f99-a3e2-cc31b323646d
+		summarizeBy: none
+		sourceColumn: User_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Service
+		dataType: string
+		lineageTag: 1f93e5f8-35ef-4eba-a23a-0fa7a0b878f7
+		summarizeBy: none
+		sourceColumn: Service
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Service Type'
+		dataType: string
+		lineageTag: 0b475b57-e467-4353-83f8-85d57f5027fd
+		summarizeBy: none
+		sourceColumn: Service Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Status
+		dataType: string
+		lineageTag: 70794749-057f-42a1-84cf-94fcab7eac9e
+		summarizeBy: none
+		sourceColumn: Payment_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reason
+		dataType: string
+		lineageTag: 90534996-7756-498d-879b-04cf3047f3d4
+		summarizeBy: none
+		sourceColumn: Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fd22bfad-1706-42ee-b947-ac46894a1d99
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition All_Transactions = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Data Analytics\Phonepe-Final-Dataset.xlsx"), null, true),
+				    All_Transactions_Sheet = Source{[Item="All_Transactions",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(All_Transactions_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Transaction_ID", type text}, {"Amount", type number}, {"User_ID", type text}, {"Service", type text}, {"Service Type", type text}, {"Payment_Status", type text}, {"Reason", type text}, {"Date", type date}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Changed Type", {"Transaction_ID"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Removed Duplicates","Recharge_Bills","Recharge Bills",Replacer.ReplaceText,{"Service"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each true),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows","Money_Transfer","Money Transfer",Replacer.ReplaceText,{"Service"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","Wrong PIN","Pending",Replacer.ReplaceText,{"Payment_Status"}),
+				    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2","Insufficient amount","Pending",Replacer.ReplaceText,{"Payment_Status"}),
+				    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3","Server error","Pending",Replacer.ReplaceText,{"Payment_Status"})
+				in
+				    #"Replaced Value4"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

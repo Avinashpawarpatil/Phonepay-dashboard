@@ -1,0 +1,24 @@
+model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["All_Transactions","All_Users","Measures (2)"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table All_Transactions
+ref table DateTableTemplate_74675a95-2b8e-48e0-b31c-8ba21b1d347d
+ref table All_Users
+ref table LocalDateTable_36d37399-0056-4322-a1b2-6384c4ea14cc
+ref table Date_Table
+ref table 'Measures (2)'
+
+ref cultureInfo en-IN
+

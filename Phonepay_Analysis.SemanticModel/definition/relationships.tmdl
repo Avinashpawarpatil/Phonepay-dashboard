@@ -1,0 +1,13 @@
+relationship fd011725-ca23-47cf-8f03-cfc119c2aaae
+	joinOnDateBehavior: datePartOnly
+	fromColumn: All_Users.Join_Date
+	toColumn: LocalDateTable_36d37399-0056-4322-a1b2-6384c4ea14cc.Date
+
+relationship cf0ad735-9cdf-8244-dc5e-d436ee1506d9
+	fromColumn: All_Transactions.User_ID
+	toColumn: All_Users.User_ID
+
+relationship 9ea3fc74-38be-2295-427a-98d94cb2ef43
+	fromColumn: All_Transactions.Date
+	toColumn: Date_Table.Date
+

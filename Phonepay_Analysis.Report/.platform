@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Phonepay_Analysis"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "6f7a3645-7287-486b-a022-96ffc6422c61"
+  }
+}
