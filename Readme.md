@@ -64,13 +64,13 @@ PhonePe-Analysis/
 
 ## How to View the Dashboard
 
-1.Download or clone this repository.
-2.Extract the downloaded ZIP file, if applicable.
-3.Locate the .pbip project file.
-4.Open the .pbip file using Microsoft Power BI Desktop.
-5.If prompted, configure the data source or update the file paths.
-6.Refresh the data if the source files are available.
-7.Explore the dashboard using the interactive filters.
+1. Download or clone this repository.
+2. Extract the downloaded ZIP file, if applicable.
+3. Locate the .pbip project file.
+4. Open the .pbip file using **Microsoft Power BI Desktop**.
+5. If prompted, configure the data source or update the file paths.
+6. Refresh the data if the source files are available.
+7. Explore the dashboard using the interactive filters.
 
 ## Purpose
 
